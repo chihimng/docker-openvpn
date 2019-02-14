@@ -104,6 +104,7 @@ usage() {
     echo " -t    Use TAP device (instead of TUN device)"
     echo " -T    Encrypt packets with the given cipher algorithm instead of the default one (tls-cipher)."
     echo " -z    Enable comp-lzo compression."
+    echo " -U    Enable UPnP port forwarding."
 }
 
 process_route_config() {
@@ -172,7 +173,7 @@ OVPN_TLS_CIPHER=''
 [ -r "$OVPN_ENV" ] && source "$OVPN_ENV"
 
 # Parse arguments
-while getopts ":a:e:E:C:T:r:s:du:bcp:n:k:DNm:f:tz2" opt; do
+while getopts ":a:e:E:C:T:r:s:du:bcp:n:k:DNm:f:tz2U" opt; do
     case $opt in
         a)
             OVPN_AUTH="$OPTARG"
@@ -249,6 +250,9 @@ while getopts ":a:e:E:C:T:r:s:du:bcp:n:k:DNm:f:tz2" opt; do
             ;;
         2)
             OVPN_OTP_AUTH=1
+            ;;
+        U)
+            OVPN_UPNP_PORT_FORWARD=1
             ;;
         f)
             OVPN_FRAGMENT="$OPTARG"
