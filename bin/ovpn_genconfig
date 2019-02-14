@@ -168,6 +168,8 @@ OVPN_ROUTES=()
 OVPN_SERVER=192.168.255.0/24
 OVPN_SERVER_URL=''
 OVPN_TLS_CIPHER=''
+OVPN_UP=${OPENVPN}/ovpn_up.sh
+OVPN_DOWN=${OPENVPN}/ovpn_down.sh
 
 # Import existing configuration if present
 [ -r "$OVPN_ENV" ] && source "$OVPN_ENV"
@@ -391,6 +393,11 @@ if [ -n "${OVPN_OTP_AUTH:-}" ]; then
     echo "plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so openvpn" >> "$conf"
     echo "reneg-sec 0" >> "$conf"
 fi
+
+# Up and down scripts
+echo "\n\n# Up and Down scripts" >> "$conf"
+echo "up $OVPN_UP" >> "$conf"
+echo "down $OVPN_DOWN" >> "$conf"
 
 # Append extra server configurations
 if [ ${#OVPN_EXTRA_SERVER_CONFIG[@]} -gt 0 ]; then
